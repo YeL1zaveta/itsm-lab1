@@ -1,0 +1,32 @@
+﻿{
+  "title": "svcdesk",
+  "uid": "svcdesk-lab3",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Request rate",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [{"expr": "sum(rate(http_server_request_duration_seconds_count{job=\"svcdesk\", http_route=\"/kb/search\"}[1m]))", "refId": "A"}]
+    },
+    {
+      "id": 2,
+      "title": "Error rate",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [{"expr": "sum(rate(http_server_request_duration_seconds_count{job=\"svcdesk\", http_route=\"/kb/search\", http_response_status_code=~\"5..\"}[1m]))", "refId": "A"}]
+    },
+    {
+      "id": 3,
+      "title": "p99 latency",
+      "type": "timeseries",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [{"expr": "histogram_quantile(0.99, sum(rate(http_server_request_duration_seconds_bucket{job=\"svcdesk\", http_route=\"/kb/search\"}[1m])) by (le))", "refId": "A"}]
+    }
+  ],
+  "schemaVersion": 36,
+  "version": 1
+}

@@ -1,0 +1,46 @@
+﻿# ai-generated: 50% - structure from template, series and timings written by student
+rule_files:
+  - alerts.yml
+
+evaluation_interval: 1m
+
+tests:
+  - interval: 1m
+    input_series:
+      - series: 'http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_request_method="GET", http_route="/kb/search", http_response_status_code="200"}'
+        values: '0+600x70 42000+84x120'
+      - series: 'http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_request_method="GET", http_route="/kb/search", http_response_status_code="502"}'
+        values: '0x70 0+516x120'
+    alert_rule_test:
+      - eval_time: 76m
+        alertname: KbSearchAvailabilityFastBurn
+        exp_alerts: []
+      - eval_time: 77m
+        alertname: KbSearchAvailabilityFastBurn
+        exp_alerts:
+          - exp_labels:
+              service: svcdesk
+              slo: availability
+              severity: P1
+            exp_annotations:
+              summary: "kb/search availability fast burn: error budget exhausted in under 2 hours"
+
+  - interval: 1m
+    input_series:
+      - series: 'http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_request_method="GET", http_route="/kb/search", http_response_status_code="200"}'
+        values: '0+600x400 240000+540x120'
+      - series: 'http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_request_method="GET", http_route="/kb/search", http_response_status_code="502"}'
+        values: '0x400 0+60x120'
+    alert_rule_test:
+      - eval_time: 436m
+        alertname: KbSearchAvailabilitySlowBurn
+        exp_alerts: []
+      - eval_time: 437m
+        alertname: KbSearchAvailabilitySlowBurn
+        exp_alerts:
+          - exp_labels:
+              service: svcdesk
+              slo: availability
+              severity: P2
+            exp_annotations:
+              summary: "kb/search availability slow burn: error budget draining over hours"
