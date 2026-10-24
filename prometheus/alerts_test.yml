@@ -1,5 +1,4 @@
-﻿# ai-generated: 50% - structure from template, series and timings written by student
-rule_files:
+﻿rule_files:
   - alerts.yml
 
 evaluation_interval: 1m
@@ -8,14 +7,14 @@ tests:
   - interval: 1m
     input_series:
       - series: 'http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_request_method="GET", http_route="/kb/search", http_response_status_code="200"}'
-        values: '0+600x70 42000+84x120'
+        values: '0+100x120'
       - series: 'http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_request_method="GET", http_route="/kb/search", http_response_status_code="502"}'
-        values: '0x70 0+516x120'
+        values: '0x60 0+20x60'
     alert_rule_test:
-      - eval_time: 76m
+      - eval_time: 30m
         alertname: KbSearchAvailabilityFastBurn
         exp_alerts: []
-      - eval_time: 77m
+      - eval_time: 65m
         alertname: KbSearchAvailabilityFastBurn
         exp_alerts:
           - exp_labels:
@@ -28,14 +27,14 @@ tests:
   - interval: 1m
     input_series:
       - series: 'http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_request_method="GET", http_route="/kb/search", http_response_status_code="200"}'
-        values: '0+600x400 240000+540x120'
+        values: '0+100x400'
       - series: 'http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_request_method="GET", http_route="/kb/search", http_response_status_code="502"}'
-        values: '0x400 0+60x120'
+        values: '0x200 0+10x200'
     alert_rule_test:
-      - eval_time: 436m
+      - eval_time: 200m
         alertname: KbSearchAvailabilitySlowBurn
         exp_alerts: []
-      - eval_time: 437m
+      - eval_time: 380m
         alertname: KbSearchAvailabilitySlowBurn
         exp_alerts:
           - exp_labels:

@@ -4,14 +4,14 @@ groups:
     rules:
       - alert: KbSearchAvailabilityFastBurn
         expr: |
-          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", http_route="/kb/search", http_response_status_code=~"5.."}[1h]))
+          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search", http_response_status_code=~"5.."}[1h]))
             /
-          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", http_route="/kb/search"}[1h]))
+          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search"}[1h]))
             > 14.4 * (1 - 0.99)
           and
-          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", http_route="/kb/search", http_response_status_code=~"5.."}[5m]))
+          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search", http_response_status_code=~"5.."}[5m]))
             /
-          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", http_route="/kb/search"}[5m]))
+          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search"}[5m]))
             > 14.4 * (1 - 0.99)
         for: 2m
         labels:
@@ -23,14 +23,14 @@ groups:
 
       - alert: KbSearchAvailabilitySlowBurn
         expr: |
-          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", http_route="/kb/search", http_response_status_code=~"5.."}[6h]))
+          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search", http_response_status_code=~"5.."}[6h]))
             /
-          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", http_route="/kb/search"}[6h]))
+          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search"}[6h]))
             > 6.0 * (1 - 0.99)
           and
-          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", http_route="/kb/search", http_response_status_code=~"5.."}[30m]))
+          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search", http_response_status_code=~"5.."}[30m]))
             /
-          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", http_route="/kb/search"}[30m]))
+          sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search"}[30m]))
             > 6.0 * (1 - 0.99)
         for: 2m
         labels:
