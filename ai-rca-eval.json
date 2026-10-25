@@ -1,0 +1,40 @@
+{
+    "investigator":  {
+                         "agent":  "course agent loop agent.py",
+                         "model":  "qwen3:4b-instruct",
+                         "mcp_server":  "prom_mcp.py (mcp 2.2.0)",
+                         "transcript":  "ai-rca/transcript.md"
+                     },
+    "hypotheses":  [
+                       {
+                           "id":  "H1",
+                           "hypothesis":  "The span \"oteldemo.ProductCatalogService/GetProduct\" shows increasing duration from 85 to 344 milliseconds, and its call count grows from 85 to 344, indicating that the product catalog service is becoming increasingly slow, which may be a bottleneck in the checkout flow.",
+                           "component":  "product-catalog",
+                           "predicts":  "histogram_quantile(0.99, sum by (le) (rate(traces_span_metrics_duration_milliseconds_bucket{service_name=\"product-catalog\", span_kind=\"SPAN_KIND_SERVER\"}[5m]))) \u003e 1000",
+                           "at":  "2026-10-12T05:06:00Z",
+                           "result":  false,
+                           "verdict":  "hallucinated",
+                           "evidence":  "Product-catalog p99 was 46.6 ms at 05:06:00 and 46.1 ms at 04:56:00, so it did not slow down."
+                       },
+                       {
+                           "id":  "H2",
+                           "hypothesis":  "Final hypothesis: The most likely cause of checkout latency is the increasing duration of the \"prepareOrderItemsAndShippingQuoteFromCart\" internal span, which has duration rising from 80 to 182 milliseconds, directly impacting the checkout flow and contributing to end-to-end latency.",
+                           "component":  "checkout",
+                           "predicts":  "histogram_quantile(0.99, sum by (le) (rate(traces_span_metrics_duration_milliseconds_bucket{service_name=\"checkout\", span_kind=\"SPAN_KIND_SERVER\"}[5m]))) \u003e 1000",
+                           "at":  "2026-10-12T05:06:00Z",
+                           "result":  true,
+                           "verdict":  "partially_correct",
+                           "evidence":  "Checkout latency did rise (p99 49.6 ms to 9050 ms), but the agent\u0027s numbers and its internal span are not the cause; shipping p99 rose from 5.3 ms to 8100 ms."
+                       },
+                       {
+                           "id":  "H3",
+                           "hypothesis":  "Hypothesis based on duration metrics: The span \"oteldemo.PaymentService/Charge\" is not visible in the metrics, but its absence in the response suggests it might have failed, though no status_code=STATUS_CODE_ERROR was present; thus, this is not confirmed.",
+                           "component":  "payment",
+                           "predicts":  "sum(rate(traces_span_metrics_calls_total{service_name=\"payment\", span_kind=\"SPAN_KIND_SERVER\", status_code=\"STATUS_CODE_ERROR\"}[5m])) \u003e 0",
+                           "at":  "2026-10-12T05:06:00Z",
+                           "result":  false,
+                           "verdict":  "hallucinated",
+                           "evidence":  "Payment had no failed server spans at 05:06:00 and its p99 stayed at 1.98 ms."
+                       }
+                   ]
+}

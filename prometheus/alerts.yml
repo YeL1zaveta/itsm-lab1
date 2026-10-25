@@ -13,7 +13,7 @@ groups:
             /
           sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search"}[5m]))
             > 14.4 * (1 - 0.99)
-        for: 2m
+        for: 0m
         labels:
           service: svcdesk
           slo: availability
@@ -32,7 +32,7 @@ groups:
             /
           sum(rate(http_server_request_duration_seconds_count{job="svcdesk", instance="svcdesk:8080", http_route="/kb/search"}[30m]))
             > 6.0 * (1 - 0.99)
-        for: 2m
+        for: 0m
         labels:
           service: svcdesk
           slo: availability
