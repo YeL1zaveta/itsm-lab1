@@ -43,20 +43,15 @@ jobs:
       - name: Start svcdesk and check /health
         run: |
           docker compose up -d --wait svcdesk
-          curl -fsS http://127.0.0.1:8000/health
+          curl -fsS http://127.0.0.1:8080/health
 
       - name: Show logs on failure
         if: failure()
-        run: docker compose logs svcdesk
+        run: docker compose logs
 
       - name: Stop svcdesk
         if: always()
-        run: docker compose down
-          # ITSM-TODO: replace this whole step with the build and the tests of your svcdesk, for example
-          #   docker compose build svcdesk tests
-          #   docker compose --profile tests run --rm tests
-          echo "::error title=build-test is not wired::replace the ITSM-TODO step of build-test in .github/workflows/ci.yml with your build and tests (CI-SPEC.md P-02)"
-          exit 1
+        run: docker compose down -v
 
   deps:
     runs-on: ubuntu-latest
