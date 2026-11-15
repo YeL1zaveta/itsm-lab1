@@ -1,8 +1,9 @@
-fastapi==0.115.0
-uvicorn==0.30.6
-pydantic==2.9.2
-fastapi==0.115.0
+fastapi==0.163.1
+starlette==1.10.0
 uvicorn==0.30.6
 pydantic==2.9.2
 prometheus-client==0.21.0
 httpx==0.28.0
+urllib3==2.8.0
+msgpack==1.2.3
+setuptools==78.1.1
