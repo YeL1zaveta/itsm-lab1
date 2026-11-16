@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y --only-upgrade zlib1g && rm -rf /var/li
 WORKDIR /app
 
 COPY src/requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt \
+    && pip uninstall -y setuptools wheel pip
 
 COPY src/ /app/src/
 
