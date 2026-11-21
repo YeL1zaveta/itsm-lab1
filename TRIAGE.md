@@ -1,7 +1,7 @@
 ---
 lab5_triage:
-  image: ghcr.io/yel1zaveta/itsm-lab1@sha256:TU_WKLEJ_DIGEST
-  sarif_receipt: 0
+  image: ghcr.io/yel1zaveta/itsm-lab1@sha256:2017ea12ed77f84e7220b4b7ef28815540a32ed39791301711323d327182611e
+  sarif_receipt: 449
 ---
 <!-- ai-generated: 60% - Claude drafted the table and the bake-off reading from my matrix and per-defect output, I checked every number -->
 # Triage
